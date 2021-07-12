@@ -13,12 +13,12 @@ import observeElement from '../helpers/simplified-element-observer';
 const cacheKey = 'files-hidden';
 
 function addButton(): void {
-	const filesHeader = select('.Box-header--blue .Details > :last-child > ul');
-	if (!filesHeader || select.exists('.rgh-toggle-files')) {
+	const commitsInfo = select('.repository-content .octicon-history')?.closest('ul');
+	if (!commitsInfo || select.exists('.rgh-toggle-files')) {
 		return;
 	}
 
-	filesHeader.append(
+	commitsInfo.append(
 		<button
 			type="button"
 			className="btn-octicon rgh-toggle-files"
