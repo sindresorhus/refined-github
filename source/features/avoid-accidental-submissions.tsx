@@ -1,3 +1,4 @@
+import React from 'dom-chef';
 import select from 'select-dom';
 import delegate from 'delegate-it';
 import * as pageDetect from 'github-url-detection';
@@ -9,32 +10,48 @@ function addQuickSubmit(): void {
 }
 
 function onKeyDown(event: delegate.Event<KeyboardEvent, HTMLInputElement>): void {
+	const field = event.delegateTarget;
+	const form = field.form!;
 	if (
 		event.key !== 'Enter'
 		|| event.ctrlKey
 		|| event.metaKey
 		|| event.isComposing // #4323
-		|| select.exists('.suggester', event.delegateTarget.form!) // GitHub’s autocomplete dropdown
+		|| select.exists([
+			'.suggester', // GitHub’s autocomplete dropdown
+			'.rgh-avoid-accidental-submissions',
+		], form)
 	) {
 		return;
 	}
 
+	if (select.exists('.btn-primary[type="submit"]:disabled', form)) {
+		return;
+	}
+
+	const message = (
+		<p className="rgh-avoid-accidental-submissions my-1">
+			A submission via <kbd>enter</kbd> has been prevented. You can press <kbd>enter</kbd> again or use <kbd>ctrl</kbd>-<kbd>enter</kbd>.
+		</p>
+	);
+	if (pageDetect.isNewFile() || pageDetect.isEditingFile() || pageDetect.isPRConversation()) {
+		field.after(message);
+	} else {
+		field.parentElement!.append(message);
+	}
+
 	event.preventDefault();
-	select([
-		'#issue_body',
-		'#pull_request_body',
-		'#commit-description-textarea',
-		'#merge_message_field',
-	], event.delegateTarget.form!)!.focus();
 }
 
+const inputElements = [
+	'form.new_issue input#issue_title',
+	'input#pull_request_title',
+	'input#commit-summary-input',
+	'#merge_title_field',
+];
+
 function init(): void {
-	delegate(document, [
-		'form.new_issue input#issue_title',
-		'input#pull_request_title',
-		'input#commit-summary-input',
-		'#merge_title_field',
-	].join(','), 'keydown', onKeyDown);
+	delegate(document, inputElements.join(','), 'keydown', onKeyDown);
 }
 
 void features.add(__filebasename, {
