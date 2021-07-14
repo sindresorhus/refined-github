@@ -1,6 +1,7 @@
 import React from 'dom-chef';
 import select from 'select-dom';
 import * as pageDetect from 'github-url-detection';
+import {DiffRenamedIcon} from '@primer/octicons-react';
 
 import features from '.';
 import * as api from '../github-helpers/api';
@@ -40,7 +41,9 @@ async function linkify(button: HTMLButtonElement, url: GitHubURL): Promise<void 
 						aria-label={`Renamed ${isNewer ? 'to' : 'from'} ${file[toKey]}`}
 						className="btn btn-outline BtnGroup-item tooltipped tooltipped-n tooltipped-no-delay"
 					>
+						{isNewer && <DiffRenamedIcon className="mr-1" transform="rotate(180)"/>}
 						{button.textContent}
+						{!isNewer && <DiffRenamedIcon className="ml-1"/>}
 					</a>,
 				);
 			}
