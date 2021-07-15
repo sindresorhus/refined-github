@@ -24,7 +24,7 @@ export function onlyShowInDropdown(id: string): void {
 		return;
 	}
 
-	(tabItem!.closest('li') ?? tabItem!.closest('.UnderlineNav-item'))!.remove();
+	(tabItem!.closest('li') ?? tabItem!.closest('.UnderlineNav-item'))!.classList.add('d-none');
 
 	const menuItem = select(`[data-menu-item$="${id}"]`)!;
 	menuItem.removeAttribute('data-menu-item');
@@ -52,9 +52,6 @@ async function init(): Promise<void> {
 		createDropdownItem('Commits', commitsUrl),
 		createDropdownItem('Branches', branchesUrl),
 	);
-
-	onlyShowInDropdown('security-tab');
-	onlyShowInDropdown('insights-tab');
 }
 
 void features.add(__filebasename, {

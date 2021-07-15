@@ -23,6 +23,7 @@ const migrations = [
 	featureWasRenamed('separate-draft-pr-button', 'one-click-pr-or-gist'), // Merged in May
 	featureWasRenamed('prevent-pr-commit-link-loss', 'prevent-link-loss'), // Merged in May
 	featureWasRenamed('remove-projects-tab', 'remove-unused-repo-tabs'), // Merged in July
+	featureWasRenamed('remove-unused-repo-tabs', 'clean-repo-tabs'), // Merged in July
 
 	// Removed features will be automatically removed from the options as well
 	OptionsSyncPerDomain.migrations.removeUnused,

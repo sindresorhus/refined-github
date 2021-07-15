@@ -83,7 +83,21 @@ async function initProjects(): Promise<void | false> {
 	projectsTab!.remove();
 }
 
+async function init(): Promise<void> {
+	const repoNavigationBar = (await elementReady('.UnderlineNav-body'))!;
+	// The user may have disabled `more-dropdown` so un-hide it
+	repoNavigationBar.parentElement!.classList.add('rgh-has-more-dropdown');
+	onlyShowInDropdown('security-tab');
+	onlyShowInDropdown('insights-tab');
+}
+
 void features.add(__filebasename, {
+	include: [
+		pageDetect.isRepo,
+	],
+	awaitDomReady: false,
+	init,
+}, {
 	include: [
 		pageDetect.isRepo,
 		pageDetect.isOrganizationProfile,

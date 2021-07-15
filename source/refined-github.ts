@@ -220,4 +220,4 @@ import './features/list-pr-for-branch';
 import './features/cancel-wiki-edit-button';
 import './features/comment-on-draft-pr-indicator';
 import './features/select-notifications';
-import './features/remove-unused-repo-tabs';
+import './features/clean-repo-tabs';
